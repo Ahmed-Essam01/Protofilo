@@ -623,9 +623,9 @@ nav {
 }
 
 .contact-card:hover {
-    transform: translateY(-10px) scale(1.02);
+    transform: translateY(-5px) ;
     border-color: #00d4ff;
-    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3), 0 0 40px rgba(123, 47, 247, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3), 0 0 40px rgba(123, 47, 247, 0.2);
 }
 
 .contact-card:hover::before {
@@ -644,12 +644,13 @@ nav {
     color: #ffffff;
     position: relative;
     z-index: 1;
-    transition: all 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transform: scale(1) rotate(0deg);
 }
 
 .contact-card:hover .contact-icon {
-    transform: scale(1.1) rotate(360deg);
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    transform: scale(1.05) rotate(10deg);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
 }
 
 .contact-card h3 {
@@ -684,7 +685,7 @@ nav {
 .contact-link:hover {
     background: linear-gradient(135deg, #7b2ff7, #00d4ff);
     color: #ffffff;
-    transform: translateX(5px);
+    transform: none;
     border-color: transparent;
 }
 
