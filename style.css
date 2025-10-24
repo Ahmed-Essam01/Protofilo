@@ -457,11 +457,12 @@ nav {
 }
 
 .experience-year {
-    width: 10%;
+    width: auto;
     text-align: center;
     color: #00d4ff;
     font-weight: bold;
     font-size: 1.2rem;
+    white-space: nowrap;
 }
 
 .experience-dot {
