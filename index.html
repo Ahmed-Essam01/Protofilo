@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Essam - DS & ML Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="logo glitch" data-text="< DATA SCIENCE />">< DATA SCIENCE /></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-center">
+                <div class="hero-image">
+                    <img src="images/me 2.jpg" alt="Ahmed Essam" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-placeholder" style="display: none;">ðŸ‘¨â€ðŸ’»</div>
+                </div>
+                <div class="hero-text">
+                    <h1>Hi, I'm <span class="highlight glitch" data-text="Ahmed Essam">Ahmed Essam</span></h1>
+                    <p class="hero-subtitle">Driving data-powered insights and intelligent solutions through advanced Machine Learning and Data Science techniques.</p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="cta-button">EXPLORE MY WORK</a>
+                        <a href="Files/Ahmed-Essam-Ahmed.pdf" target="_blank" class="cta-button cta-button-outline">RESUME</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- About Section -->
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="section-title">About <span class="highlight">Me</span></h2>
+    <div class="about-content">
+      <div class="about-text">
+        <p>I'm Ahmed Essam, currently studying Computer Science and Mathematics at Helwan University, with a strong focus on Data Science and Machine Learning I have a solid foundation in mathematics, statistics, and programming, which enables me to analyze complex datasets and extract meaningful insights with confidence and creativity In addition to my programming and analytical skills, I am passionate about building machine learning models and applying data-driven solutions to real-world problems. I continuously strive to enhance my knowledge in AI, big data, and advanced analytics to stay ahead in the rapidly evolving field of technology My dedication to using data for smarter decision-making drives my approach to both problemsolving and innovation Page</p>
+        <p><strong>Core Specializations:</strong></p>
+        <ul style="list-style: none; padding-left: 20px; color: #00d4ff;">
+          <li>âœ“ Machine Learning</li>
+          <li>âœ“ Data Science</li>
+          <li>âœ“ Data Analysis</li>
+        </ul>
+      </div>
+
+      <!-- 3D Container -->
+      <div class="about-3d" id="about3d" style="width:100%; height:600px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Three.js Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+window.onload = function() {
+  const container = document.getElementById('about3d');
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+
+  const camera = new THREE.PerspectiveCamera(50, width/height, 0.1, 1000);
+  camera.position.set(0, 1, 5);
+
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  // Lights
+  const hemiLight = new THREE.HemisphereLight(0x00d4ff, 0x202040, 1.5);
+  scene.add(hemiLight);
+  const pointLight = new THREE.PointLight(0x00d4ff, 2);
+  pointLight.position.set(5, 5, 5);
+  scene.add(pointLight);
+  const pointLight2 = new THREE.PointLight(0x7b2ff7, 1.5);
+  pointLight2.position.set(-5, -5, 5);
+  scene.add(pointLight2);
+
+  // Controls
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableZoom = true;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 1;
+
+  // --- Load Brain Model ---
+  const loader = new THREE.GLTFLoader();
+  let brainModel;
+  
+  loader.load(
+    "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BrainStem/glTF/BrainStem.gltf",
+    (gltf) => {
+      brainModel = gltf.scene;
+      brainModel.scale.set(2, 2, 2);
+      brainModel.position.set(0, 0, 0);
+      
+      // Add glow effect to brain
+      brainModel.traverse((child) => {
+        if (child.isMesh) {
+          child.material.emissive = new THREE.Color(0x00d4ff);
+          child.material.emissiveIntensity = 0.3;
+        }
+      });
+      
+      scene.add(brainModel);
+      console.log("âœ… Brain model loaded successfully");
+    },
+    (progress) => {
+      console.log('Loading: ' + (progress.loaded / progress.total * 100) + '%');
+    },
+    (err) => console.error("âŒ Error loading Brain model:", err)
+  );
+
+  // --- Neural Network Overlay ---
+  const nodes = [];
+  const nodeMat = new THREE.MeshStandardMaterial({
+    color:0x00d4ff, 
+    emissive:0x00ffff, 
+    emissiveIntensity:0.9,
+    transparent: true,
+    opacity: 0.8
+  });
+  const lineMat = new THREE.LineBasicMaterial({
+    color:0x00d4ff, 
+    transparent:true, 
+    opacity:0.2
+  });
+
+  for(let i=0;i<80;i++){
+    const geo = new THREE.SphereGeometry(0.08, 16, 16);
+    const mesh = new THREE.Mesh(geo, nodeMat);
+    mesh.position.set(
+      (Math.random()-0.5)*6, 
+      (Math.random()-0.5)*6, 
+      (Math.random()-0.5)*6
+    );
+    mesh.userData.scaleDir = Math.random() > 0.5 ? 1 : -1;
+    mesh.userData.velocity = {
+      x: (Math.random()-0.5)*0.02,
+      y: (Math.random()-0.5)*0.02,
+      z: (Math.random()-0.5)*0.02
+    };
+    scene.add(mesh);
+    nodes.push(mesh);
+  }
+
+  const lines = [];
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      if(Math.random() < 0.05){
+        const geom = new THREE.BufferGeometry().setFromPoints([nodes[i].position, nodes[j].position]);
+        const line = new THREE.Line(geom, lineMat);
+        scene.add(line);
+        lines.push({line, a:nodes[i], b:nodes[j]});
+      }
+    }
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+
+    // Rotate brain model
+    if(brainModel){
+      brainModel.rotation.y += 0.005;
+      brainModel.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+    }
+
+    // Animate nodes
+    nodes.forEach(n=>{
+      const scaleFactor = 0.01 * n.userData.scaleDir;
+      n.scale.x += scaleFactor;
+      n.scale.y += scaleFactor;
+      n.scale.z += scaleFactor;
+      if(n.scale.x > 1.5 || n.scale.x < 0.5) n.userData.scaleDir *= -1;
+
+      // Move nodes
+      n.position.x += n.userData.velocity.x;
+      n.position.y += n.userData.velocity.y;
+      n.position.z += n.userData.velocity.z;
+
+      // Bounce back if too far
+      if(Math.abs(n.position.x) > 3) n.userData.velocity.x *= -1;
+      if(Math.abs(n.position.y) > 3) n.userData.velocity.y *= -1;
+      if(Math.abs(n.position.z) > 3) n.userData.velocity.z *= -1;
+
+      n.rotation.x += 0.002;
+      n.rotation.y += 0.002;
+    });
+
+    // Update lines
+    lines.forEach(l=>{
+      l.line.geometry.setFromPoints([l.a.position, l.b.position]);
+    });
+
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', ()=>{
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+  });
+};
+</script>
+
+
+
+    <!-- Skills Section -->
+     <section class="section" id="skills">
+  <div class="container">
+    <h2 class="section-title">Skills & <span class="highlight">Expertise</span></h2>
+    <div class="skills-grid">
+
+      <!-- Machine Learning -->
+     <div class="skill-category">
+  <h3>🧠  Machine Learning</h3>
+
+  <div class="skill-item">
+    <span class="skill-name">Supervised Learning (Regression & Classification)</span>
+    <span class="skill-percentage">92%</span>
+  </div>
+  <div class="skill-bar"><div class="skill-progress" style="width: 92%"></div></div>
+
+  <div class="skill-item">
+    <span class="skill-name">Unsupervised Learning (Clustering)</span>
+    <span class="skill-percentage">88%</span>
+  </div>
+  <div class="skill-bar"><div class="skill-progress" style="width: 88%"></div></div>
+
+  <div class="skill-item">
+    <span class="skill-name">Scikit-learn</span>
+    <span class="skill-percentage">95%</span>
+  </div>
+  <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
+</div>
+
+      <!-- Development -->
+      <div class="skill-category">
+        <h3>💻 Development</h3>
+        <div class="skill-item">
+          <span class="skill-name">Python</span>
+          <span class="skill-percentage">95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">SQL</span>
+          <span class="skill-percentage">75%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 75%"></div></div>
+        
+        <div class="skill-item">
+          <span class="skill-name">OOP</span>
+          <span class="skill-percentage">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+        
+      
+      </div>
+
+      <!-- Data Visualization -->
+      <div class="skill-category">
+        <h3>📊 Data Visualization</h3>
+        <div class="skill-item">
+          <span class="skill-name">Power BI</span>
+          <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Plotly</span>
+          <span class="skill-percentage">80%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Matplotlib</span>
+          <span class="skill-percentage">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div>
+      </div>
+
+      <!-- Data Processing & Analysis -->
+      <div class="skill-category">
+        <h3>📈 Data Processing & Analysis</h3>
+        <div class="skill-item">
+          <span class="skill-name">Pandas</span>
+          <span class="skill-percentage">95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">NumPy</span>
+          <span class="skill-percentage">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Excel</span>
+          <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+      </div>
+
+      <!-- Statistics & Mathematics -->
+      <div class="skill-category">
+        <h3>🧮 Statistics & Mathematics</h3>
+        <div class="skill-item">
+          <span class="skill-name">Probability & Statistics</span>
+          <span class="skill-percentage">88%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 88%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Linear Algebra</span>
+          <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+      </div>
+
+      <!-- Tools & Platforms -->
+      <div class="skill-category">
+        <h3>⚙️ Tools & Platforms</h3>
+        <div class="skill-item">
+          <span class="skill-name">Git/GitHub</span>
+          <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Jupyter Notebook</span>
+          <span class="skill-percentage">95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Google Colab</span>
+          <span class="skill-percentage">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div>
+      </div>
+
+      <!-- Soft Skills -->
+      <div class="skill-category">
+        <h3>🤝 Soft Skills</h3>
+        <div class="skill-item">
+          <span class="skill-name">Problem Solving</span>
+          <span class="skill-percentage">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Communication</span>
+          <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+
+        <div class="skill-item">
+          <span class="skill-name">Critical Thinking</span>
+          <span class="skill-percentage">88%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-progress" style="width: 88%"></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+    <div class="container">
+        <h2 class="section-title">Work <span class="highlight">Experience</span></h2>
+        <div class="experience-timeline">
+
+            <div class="experience-item">
+                <div class="experience-year">07/2025 â€“ 08/2025</div>
+                <div class="experience-content">
+                    <h3 style="color: #00d4ff;">Advanced Data Analytics Intern</h3>
+                    <h4 style="color: #ffffff; margin-bottom: 1rem;">National Telecommunication Institute (NTI)</h4>
+                    <ul style="color: #cccccc; list-style: none; padding-left: 0;">
+                        <li>âœ“ Gained hands-on experience in data preprocessing using Python libraries (Pandas, NumPy, Scikit-learn)</li>
+                        <li>âœ“ Developed interactive dashboards and reports using Power BI to visualize business insights</li>
+                        <li>âœ“ Applied machine learning models (classification, regression) on real-world datasets</li>
+                        <li>âœ“ Worked on multiple practical projects focusing on data cleaning, feature engineering, and model evaluation</li>
+                        <li>âœ“ Collaborated with peers to present insights and optimize analytical workflows</li>
+                    </ul>
+                </div>
+                <div class="experience-dot"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+  <div class="container">
+    <h2 class="section-title">My <span class="highlight">Projects</span></h2>
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="images/1.jpg" alt="Heart Disease Prediction" style="width:100%; height:150px; object-fit:cover; border-radius:10px;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Heart Disease Prediction</h3>
+          <p class="project-desc">Built ML models to predict heart disease using patient data. Included preprocessing, visualization, and classification models (Random Forest, Logistic Regression, Naive Bayes).</p>
+          <div class="project-tech">
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">NumPy</span>
+            <span class="tech-tag">Matplotlib</span>
+            <span class="tech-tag">Seaborn</span>
+            <span class="tech-tag">Scikit-learn</span>
+            <span class="tech-tag">Power BI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="images/2.jpg" alt="Personality Prediction" style="width:100%; height:150px; object-fit:cover; border-radius:10px;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Personality Prediction</h3>
+          <p class="project-desc">Preprocessed synthetic dataset for personality traits, built dashboards, and developed ML models to classify and predict personality types.</p>
+          <div class="project-tech">
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">NumPy</span>
+            <span class="tech-tag">Matplotlib</span>
+            <span class="tech-tag">Seaborn</span>
+            <span class="tech-tag">Scikit-learn</span>
+            <span class="tech-tag">Power BI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="images/4.jpg" alt="Hotel Booking Analysis" style="width:100%; height:150px; object-fit:cover; border-radius:10px;">
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Hotel Booking Analysis</h3>
+          <p class="project-desc">Preprocessed hotel bookings dataset, built dashboards to analyze booking trends & patterns, and applied ML techniques for forecasting.</p>
+          <div class="project-tech">
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">NumPy</span>
+            <span class="tech-tag">Matplotlib</span>
+            <span class="tech-tag">Seaborn</span>
+            <span class="tech-tag">Power BI</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+    <section class="section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's <span class="highlight">Connect</span></h2>
+            <div class="contact-modern-grid-two">
+                <div class="contact-card" data-aos="fade-up">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Email</h3>
+                    <p>ahmedessam01056@gmail.com</p>
+                    <a href="mailto:ahmedessam01056@gmail.com" class="contact-link">Send Email →</a>
+                </div>
+                <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>+20 111 828 0115</p>
+                    <a href="tel:+201118280115" class="contact-link">Call Now →</a>
+                </div>
+                </div>
+            </div>
+            <div class="social-section" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="social-title">Connect on Social Media</h3>
+                <div class="social-links">
+                    <a href="https://linkedin.com/in/ahmed-essam-3b9641363" target="_blank" class="social-btn linkedin" title="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
+                        </svg>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/Ahmed-Essam01" target="_blank" class="social-btn github" title="GitHub">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://wa.me/201118280115" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
+                        </svg>
+                        <span>WhatsApp</span>
+                    </a>
+<script src="java.js"></script>
+
+<!-- Active Navigation Fix -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('.section, .hero');
+    
+    console.log('✅ Navigation System Started');
+    
+    // Set home as active initially
+    navLinks[0].classList.add('active');
+    
+    function setActiveNav() {
+        let currentSection = 'home';
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollY >= sectionTop && scrollY < sectionBottom) {
+                currentSection = sectionId;
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + currentSection) {
+                link.classList.add('active');
+                console.log('Active:', currentSection);
+            }
+        });
+    }
+    
+    // Update on scroll
+    window.addEventListener('scroll', setActiveNav);
+    
+    // Smooth scroll on click
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
