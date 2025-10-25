@@ -532,6 +532,11 @@ nav {
 .certificate-btn:active {
     transform: translateY(-1px) scale(0.98);
 }
+.certificate-btn .emoji {
+  font-size: 1.8rem; /* حجم الإيموجي */
+  line-height: 1;
+}
+
 /* Projects Section */
 .projects-grid {
     display: grid;
